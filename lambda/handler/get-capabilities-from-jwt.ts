@@ -28,11 +28,11 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
 
         const userId = event.requestContext.authorizer.principalId as string;
 
-        const unsafeMetadata = event.requestContext.authorizer.unsafeMetadata
-            ? JSON.parse(event.requestContext.authorizer.unsafeMetadata) as UnsafeMetadata
+        const publicMetadata = event.requestContext.authorizer.publicMetadata
+            ? JSON.parse(event.requestContext.authorizer.publicMetadata) as UnsafeMetadata
             : null;
 
-        if (!unsafeMetadata || !hasCapability('eap', unsafeMetadata.capabilities)) return {
+        if (!publicMetadata || !hasCapability('eap', publicMetadata.capabilities)) return {
             statusCode: 403,
             headers: defaultHeaders,
             body: JSON.stringify({error: 'NOT_AUTHORISED'})
@@ -42,8 +42,8 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
             statusCode: 200,
             headers: defaultHeaders,
             body: JSON.stringify({
-                message: `${userId} has access to these capabilities in api requests. Capabilities are extracted from the Clerk's jwt claims unsafeMetadata property`,
-                capabilities: unsafeMetadata.capabilities
+                message: `${userId} has access to these capabilities in api requests. Capabilities are extracted from the Clerk's jwt claims publicMetadata property`,
+                capabilities: publicMetadata.capabilities
             })
         }
     } catch (e) {

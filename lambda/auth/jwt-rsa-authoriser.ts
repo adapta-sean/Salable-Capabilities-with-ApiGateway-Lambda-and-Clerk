@@ -66,7 +66,7 @@ const authenticate = async (event: any) => {
                 // policyDocument: getPolicyDocument('Allow', event.methodArn), // Todo: figure out why this isn't working, currently causes 403 response
                 policyDocument: getPolicyDocument('Allow', '*'),
                 context: {
-                    unsafeMetadata: claims.unsafeMetadata ? JSON.stringify(claims.unsafeMetadata) : '',
+                    publicMetadata: claims.publicMetadata ? JSON.stringify(claims.publicMetadata) : '',
                 }
             })
         );
