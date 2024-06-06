@@ -61,13 +61,13 @@ export class SalableCapabilitiesWithAwsLambdaAndClerkStack extends cdk.Stack {
 
         this.authoriserLogicalId = authorizer.logicalId;
 
-        const getThingHandler = new NodejsFunction(this, 'SalableDemo_GetThingLambda', {
+        const getCapabilitiesFromJwtHandler = new NodejsFunction(this, 'SalableDemo_GetCapabilitiesFromJwtLambda', {
             ...commonLambdaProps,
-            entry: 'lambda/handler/get-thing.ts',
+            entry: 'lambda/handler/get-capabilities-from-jwt.ts',
         });
 
-        const thingResource = api.root.addResource('thing');
-        this.addAuthMethod('get', thingResource, getThingHandler);
+        const thingResource = api.root.addResource('capabilities-from-jwt');
+        this.addAuthMethod('get', thingResource, getCapabilitiesFromJwtHandler);
 
         const licenseCheckHandler = new NodejsFunction(this, 'SalableDemo_LicenseCheckLambda', {
             ...commonLambdaProps,

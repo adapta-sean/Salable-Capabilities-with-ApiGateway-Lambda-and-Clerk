@@ -5,15 +5,19 @@ type UnsafeMetadata = {
     capabilities: Record<string, string>;
 }
 
-function hasCapability(requiredCapability: string, unsafeMetadata: UnsafeMetadata): boolean {
-    if (!(requiredCapability in unsafeMetadata.capabilities)) {
+function hasCapability(requiredCapability: string, capabilities: Record<string, string>): boolean {
+    if (!(requiredCapability in capabilities)) {
         return false;
     }
-    const expirationDate = new Date(unsafeMetadata.capabilities[requiredCapability]);
+    const expirationDate = new Date(capabilities[requiredCapability]);
     return new Date() <= expirationDate;
 }
 
-
+/**
+ * This endpoint is used purely to demonstrate that capabilities are available to the api via the jwt claims.
+ * Requires non-expired the `eap` capability to access
+ * @param event
+ */
 export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = async (event) => {
     try {
         if (!event?.requestContext?.authorizer) return {
@@ -28,8 +32,7 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
             ? JSON.parse(event.requestContext.authorizer.unsafeMetadata) as UnsafeMetadata
             : null;
 
-        const requiredCapability = 'eap';
-        if (!unsafeMetadata || !hasCapability(requiredCapability, unsafeMetadata)) return {
+        if (!unsafeMetadata || !hasCapability('eap', unsafeMetadata.capabilities)) return {
             statusCode: 403,
             headers: defaultHeaders,
             body: JSON.stringify({error: 'NOT_AUTHORISED'})
@@ -38,7 +41,10 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
         return {
             statusCode: 200,
             headers: defaultHeaders,
-            body: JSON.stringify({data: `fetched with eap capability by ${userId}`})
+            body: JSON.stringify({
+                message: `${userId} has access to these capabilities in api requests. Capabilities are extracted from the Clerk's jwt claims unsafeMetadata property`,
+                capabilities: unsafeMetadata.capabilities
+            })
         }
     } catch (e) {
         console.log(e);
