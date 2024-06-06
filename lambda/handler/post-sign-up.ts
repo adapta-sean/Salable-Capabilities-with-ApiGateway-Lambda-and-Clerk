@@ -44,7 +44,7 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
 
             if (data.capabilities) {
                 await clerkClient.users.updateUserMetadata(userId, {
-                    unsafeMetadata: {capabilities: data.capabilities},
+                    unsafeMetadata: {capabilities: data.capabilitiesEndDates},
                 });
             }
         }

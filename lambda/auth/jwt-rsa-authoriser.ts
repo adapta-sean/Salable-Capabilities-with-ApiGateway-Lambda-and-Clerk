@@ -63,7 +63,7 @@ const authenticate = async (event: any) => {
         .then((claims: any) =>
             ({
                 principalId: claims.sub,
-                // policyDocument: getPolicyDocument('Allow', event.methodArn), // Todo: figure out why this isn't working
+                // policyDocument: getPolicyDocument('Allow', event.methodArn), // Todo: figure out why this isn't working, currently causes 403 response
                 policyDocument: getPolicyDocument('Allow', '*'),
                 context: {
                     unsafeMetadata: claims.unsafeMetadata ? JSON.stringify(claims.unsafeMetadata) : '',

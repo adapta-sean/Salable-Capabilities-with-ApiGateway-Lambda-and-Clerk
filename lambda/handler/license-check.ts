@@ -29,7 +29,7 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
 
             if (data.statusCode === 200 && data.capabilities) {
                 await clerkClient.users.updateUserMetadata(userId, {
-                    unsafeMetadata: {capabilities: data.capabilities},
+                    unsafeMetadata: { capabilities: data.capabilitiesEndDates },
                 });
             }
         }
