@@ -66,8 +66,8 @@ export class SalableCapabilitiesWithAwsLambdaAndClerkStack extends cdk.Stack {
             entry: 'lambda/handler/get-capabilities-from-jwt.ts',
         });
 
-        const thingResource = api.root.addResource('capabilities-from-jwt');
-        this.addAuthMethod('get', thingResource, getCapabilitiesFromJwtHandler);
+        const getCapabilitiesFromJwtResource = api.root.addResource('capabilities-from-jwt');
+        this.addAuthMethod('get', getCapabilitiesFromJwtResource, getCapabilitiesFromJwtHandler);
 
         const licenseCheckHandler = new NodejsFunction(this, 'SalableDemo_LicenseCheckLambda', {
             ...commonLambdaProps,
