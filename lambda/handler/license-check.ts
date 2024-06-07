@@ -27,7 +27,7 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
         if (response.status === 200) {
             const data = await response.json();
 
-            if (data.statusCode === 200 && data.capabilities) {
+            if (data.capabilities) {
                 await clerkClient.users.updateUserMetadata(userId, {
                     publicMetadata: { capabilities: data.capabilitiesEndDates },
                 });
