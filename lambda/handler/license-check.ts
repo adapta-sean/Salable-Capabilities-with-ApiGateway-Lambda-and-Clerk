@@ -17,7 +17,7 @@ export const handler: Handler<APIGatewayProxyEvent, APIGatewayProxyResult> = asy
 
     try {
         const response = await fetch(
-            `https://api.salable.app/licenses/check?productUuid=${process.env.SALABLE_PRODUCT_UUID}&granteeIds=${userId}`, {
+            `https://api.salable.app/licenses/check?productUuid=${process.env.SALABLE_PRODUCT_UUID}&granteeIds=${userId}?grace=1`, {
                 headers: {
                     'x-api-key': process.env.SALABLE_READ_LICENSE!,
                     'version': 'v2'
